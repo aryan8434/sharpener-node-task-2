@@ -1,42 +1,16 @@
 const http = require('http');
-const fs = require('fs');
+const routes = require('./routes');
 
-const server = http.createServer((req, res) => {
-    const url = req.url;
-    const method = req.method;
+// Support both direct function export (Way 1) and object exports (Way 2 & 3)
+const handler = typeof routes === 'function' ? routes : routes.handler;
 
-    if (url === '/') {
-        res.setHeader('Content-Type', 'text/html');
-        res.write('<html>');
-        res.write('<head><title>Enter Message</title></head>');
-        res.write('<body>');
-        res.write('<form action="/message" method="POST"><input type="text" name="message"><button type="submit">Send</button></form>');
-        res.write('</body>');
-        res.write('</html>');
-        return res.end();
-    }
+if (routes.someText) {
+    console.log(routes.someText);
+}
 
-    if (url === '/message' && method === 'POST') {
-        const body = [];
-        req.on('data', (chunk) => {
-            body.push(chunk);
-        });
-
-        return req.on('end', () => {
-            const parsedBody = Buffer.concat(body).toString();
-            const message = parsedBody.split('=')[1];
-            fs.writeFile('message.txt', message, (err) => {
-                res.statusCode = 302;
-                res.setHeader('Location', '/');
-                return res.end();
-            });
-        });
-    }
-
-    res.statusCode = 404;
-    res.setHeader('Content-Type', 'text/html');
-    res.end('<h1>Page Not Found</h1>');
-});
+const server = http.createServer(handler);
 
 const PORT = 3000;
-server.listen(PORT);
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
