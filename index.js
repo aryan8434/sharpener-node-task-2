@@ -1,3 +1,10 @@
+function formatCurrency(amount, currency = 'USD') {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: currency
+    }).format(amount);
+}
+
 function calculateTotal(price, taxRate) {
     if (typeof price !== 'number' || isNaN(price) || price < 0) {
         throw new Error('Price must be a non-negative number');
@@ -17,3 +24,4 @@ let taxPercent = 0.18;
 let finalAmount = calculateTotal(itemPrice, taxPercent);
 
 console.log("Final Amount:", finalAmount);
+console.log("Formatted Total:", formatCurrency(finalAmount));
