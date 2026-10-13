@@ -1,3 +1,9 @@
+/**
+ * Formats a numeric value into a currency formatted string.
+ * @param {number} amount - The amount to format.
+ * @param {string} [currency='USD'] - The ISO currency code.
+ * @returns {string} Formatted currency string.
+ */
 function formatCurrency(amount, currency = 'USD') {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -5,6 +11,12 @@ function formatCurrency(amount, currency = 'USD') {
     }).format(amount);
 }
 
+/**
+ * Computes discount amount based on initial price and percentage.
+ * @param {number} price - The original item price.
+ * @param {number} [discountPercent=0] - Discount rate between 0 and 1.
+ * @returns {number} The discount amount.
+ */
 function calculateDiscount(price, discountPercent = 0) {
     if (typeof discountPercent !== 'number' || discountPercent < 0 || discountPercent > 1) {
         throw new Error('Discount percentage must be a number between 0 and 1');
@@ -12,6 +24,13 @@ function calculateDiscount(price, discountPercent = 0) {
     return price * discountPercent;
 }
 
+/**
+ * Computes a detailed bill breakdown including discount, tax, and final amount.
+ * @param {number} price - Item price before deductions.
+ * @param {number} [taxRate=0.18] - Applicable tax rate (e.g., 0.18 for 18%).
+ * @param {number} [discountPercent=0] - Discount rate (e.g., 0.10 for 10%).
+ * @returns {Object} Detailed breakdown of the billing figures.
+ */
 function generateBillBreakdown(price, taxRate = 0.18, discountPercent = 0) {
     if (typeof price !== 'number' || isNaN(price) || price < 0) {
         throw new Error('Price must be a non-negative number');
@@ -36,6 +55,9 @@ function generateBillBreakdown(price, taxRate = 0.18, discountPercent = 0) {
     };
 }
 
+/**
+ * Runs self-verification tests.
+ */
 function runTests() {
     console.log("Running bill calculation tests...");
     
@@ -54,11 +76,20 @@ function runTests() {
     console.log("All tests passed successfully!");
 }
 
-runTests();
+if (require.main === module) {
+    runTests();
 
-let sampleBill = generateBillBreakdown(250, 0.18, 0.15);
-console.log("\nSample Bill Summary:");
-console.log(`Original: ${formatCurrency(sampleBill.basePrice)}`);
-console.log(`Discount (${sampleBill.discountRate * 100}%): -${formatCurrency(sampleBill.discountAmount)}`);
-console.log(`Tax (${sampleBill.taxRate * 100}%): +${formatCurrency(sampleBill.taxAmount)}`);
-console.log(`Final Total: ${formatCurrency(sampleBill.totalAmount)}`);
+    let sampleBill = generateBillBreakdown(250, 0.18, 0.15);
+    console.log("\nSample Bill Summary:");
+    console.log(`Original: ${formatCurrency(sampleBill.basePrice)}`);
+    console.log(`Discount (${sampleBill.discountRate * 100}%): -${formatCurrency(sampleBill.discountAmount)}`);
+    console.log(`Tax (${sampleBill.taxRate * 100}%): +${formatCurrency(sampleBill.taxAmount)}`);
+    console.log(`Final Total: ${formatCurrency(sampleBill.totalAmount)}`);
+}
+
+module.exports = {
+    formatCurrency,
+    calculateDiscount,
+    generateBillBreakdown,
+    runTests
+};
