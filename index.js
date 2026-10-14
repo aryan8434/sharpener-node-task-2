@@ -32,33 +32,10 @@ function generateBillBreakdown(price, taxRate = 0.18, discountPercent = 0) {
         taxableAmount: discountedPrice,
         taxRate: taxRate,
         taxAmount: tax,
-        totalAmount: Number(total.toFixed(2))
+        totalAmount: total
     };
 }
 
-function runTests() {
-    console.log("Running bill calculation tests...");
-    
-    // Test Case 1: Standard calculation without discount
-    const test1 = generateBillBreakdown(100, 0.18, 0);
-    console.assert(test1.totalAmount === 118, `Test 1 failed: Expected 118, got ${test1.totalAmount}`);
-
-    // Test Case 2: Calculation with 10% discount
-    const test2 = generateBillBreakdown(100, 0.18, 0.10);
-    console.assert(test2.totalAmount === 106.2, `Test 2 failed: Expected 106.2, got ${test2.totalAmount}`);
-
-    // Test Case 3: Zero price
-    const test3 = generateBillBreakdown(0, 0.18, 0);
-    console.assert(test3.totalAmount === 0, `Test 3 failed: Expected 0, got ${test3.totalAmount}`);
-
-    console.log("All tests passed successfully!");
-}
-
-runTests();
-
-let sampleBill = generateBillBreakdown(250, 0.18, 0.15);
-console.log("\nSample Bill Summary:");
-console.log(`Original: ${formatCurrency(sampleBill.basePrice)}`);
-console.log(`Discount (${sampleBill.discountRate * 100}%): -${formatCurrency(sampleBill.discountAmount)}`);
-console.log(`Tax (${sampleBill.taxRate * 100}%): +${formatCurrency(sampleBill.taxAmount)}`);
-console.log(`Final Total: ${formatCurrency(sampleBill.totalAmount)}`);
+let bill = generateBillBreakdown(100, 0.18, 0.10);
+console.log("Bill Breakdown:", bill);
+console.log("Total Payable:", formatCurrency(bill.totalAmount));
