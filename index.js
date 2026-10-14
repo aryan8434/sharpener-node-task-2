@@ -12,7 +12,7 @@ function calculateDiscount(price, discountPercent = 0) {
     return price * discountPercent;
 }
 
-function generateBillBreakdown(price, taxRate = 0.18, discountPercent = 0) {
+function calculateTotal(price, taxRate, discountPercent = 0) {
     if (typeof price !== 'number' || isNaN(price) || price < 0) {
         throw new Error('Price must be a non-negative number');
     }
@@ -24,18 +24,14 @@ function generateBillBreakdown(price, taxRate = 0.18, discountPercent = 0) {
     let discountedPrice = price - discount;
     let tax = discountedPrice * taxRate;
     let total = discountedPrice + tax;
-
-    return {
-        basePrice: price,
-        discountRate: discountPercent,
-        discountAmount: discount,
-        taxableAmount: discountedPrice,
-        taxRate: taxRate,
-        taxAmount: tax,
-        totalAmount: total
-    };
+    return total;
 }
 
-let bill = generateBillBreakdown(100, 0.18, 0.10);
-console.log("Bill Breakdown:", bill);
-console.log("Total Payable:", formatCurrency(bill.totalAmount));
+let itemPrice = 100;
+let taxPercent = 0.18;
+let discountPercent = 0.10;
+
+let finalAmount = calculateTotal(itemPrice, taxPercent, discountPercent);
+
+console.log("Item Price:", formatCurrency(itemPrice));
+console.log("Final Amount with Discount & Tax:", formatCurrency(finalAmount));
