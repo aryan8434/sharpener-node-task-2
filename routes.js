@@ -72,7 +72,27 @@ const requestHandler = (req, res) => {
     res.end('<h1>404 - Page Not Found</h1>');
 };
 
+// ============================================================================
+// Demonstration of the 3 Ways of Exporting Modules in Node.js (Sharpener Task 2)
+// ============================================================================
+// Way 1: Exporting a single function or object
+// module.exports = requestHandler;
+//
+// Way 2: Exporting an object containing multiple properties / functions
+// module.exports = {
+//     handler: requestHandler,
+//     someText: 'Some hard coded text'
+// };
+//
+// Way 3: Exporting individual properties directly onto module.exports / exports
+// module.exports.handler = requestHandler;
+// module.exports.someText = 'Some hard coded text';
+// exports.handler = requestHandler;
+// exports.someText = 'Some hard coded text';
+// ============================================================================
+
+// Using Way 2 for structured access in index.js:
 module.exports = {
     handler: requestHandler,
-    someText: 'Modular Routing in Node.js'
+    someText: 'Some hard coded text'
 };
