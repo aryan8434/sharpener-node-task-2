@@ -1,0 +1,22 @@
+{
+  "name": "sharpener-node-task-2",
+  "version": "1.0.0",
+  "description": "Sharpener Node.js Task 2 - Modular routing and server request handling",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "node test.js"
+  },
+  "keywords": [
+    "nodejs",
+    "sharpener",
+    "http",
+    "routing"
+  ],
+  "author": "aryan8434",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
