@@ -43,6 +43,30 @@ const requestHandler = (req, res) => {
         `);
     }
 
+    if (url === '/message' && method === 'POST') {
+        const bodyChunks = [];
+
+        req.on('data', (chunk) => {
+            bodyChunks.push(chunk);
+        });
+
+        return req.on('end', () => {
+            const parsedBody = Buffer.concat(bodyChunks).toString();
+            const messageValue = parsedBody.split('=')[1] || '';
+
+            fs.writeFile(MESSAGE_FILE, messageValue, (err) => {
+                if (err) {
+                    console.error('Failed to write message:', err);
+                    res.statusCode = 500;
+                    return res.end('Internal Server Error');
+                }
+                res.statusCode = 302;
+                res.setHeader('Location', '/');
+                return res.end();
+            });
+        });
+    }
+
     res.statusCode = 404;
     res.setHeader('Content-Type', 'text/html');
     res.end('<h1>404 - Page Not Found</h1>');
