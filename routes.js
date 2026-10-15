@@ -3,6 +3,17 @@ const path = require('path');
 
 const MESSAGE_FILE = path.join(__dirname, 'message.txt');
 
+/**
+ * Parses and sanitizes form URL-encoded body data for message parameter
+ * @param {string} bodyString 
+ * @returns {string} Decoded message text
+ */
+const parseMessageBody = (bodyString) => {
+    const params = new URLSearchParams(bodyString);
+    const message = params.get('message') || '';
+    return message.trim();
+};
+
 const requestHandler = (req, res) => {
     const { url, method } = req;
 
@@ -52,7 +63,7 @@ const requestHandler = (req, res) => {
 
         return req.on('end', () => {
             const parsedBody = Buffer.concat(bodyChunks).toString();
-            const messageValue = parsedBody.split('=')[1] || '';
+            const messageValue = parseMessageBody(parsedBody);
 
             fs.writeFile(MESSAGE_FILE, messageValue, (err) => {
                 if (err) {
@@ -94,5 +105,6 @@ const requestHandler = (req, res) => {
 // Using Way 2 for structured access in index.js:
 module.exports = {
     handler: requestHandler,
+    parseMessageBody,
     someText: 'Some hard coded text'
 };
